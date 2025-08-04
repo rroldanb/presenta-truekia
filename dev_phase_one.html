@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruekIA - Sistema de Intercambio de Habilidades</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .align-right {
+        display: flex;
+        justify-content: flex-end;
+        }
+
+        .btn-link {
+        display: inline-block;
+        margin: 0px 0;
+        padding: 10px 20px;
+        background: #4facfe;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s ease;
+        }
+
+        .btn-link:hover {
+        background: #64b9d1;
+        }
+
+        .flow-container {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        
+        .flow-step {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-left: 5px solid;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .flow-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .step-user { border-left-color: #4facfe; }
+        .step-ai { border-left-color: #ff6b6b; }
+        .step-match { border-left-color: #4ecdc4; }
+        .step-exchange { border-left-color: #45b7d1; }
+        .step-backend { border-left-color: #e74c3c; }
+        .step-frontend { border-left-color: #3498db; }
+        .step-design { border-left-color: #9b59b6; }
+        
+        .phase-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .phase-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .task-box {
+            margin-top: 15px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .backend-task {
+            background: #ffebee;
+            border: 1px solid #e74c3c;
+            color: #c0392b;
+        }
+        
+        .frontend-task {
+            background: #e3f2fd;
+            border: 1px solid #3498db;
+            color: #2980b9;
+        }
+        
+        .design-task {
+            background: #f3e5f5;
+            border: 1px solid #9b59b6;
+            color: #8e44ad;
+        }
+        
+        .architecture-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #ecf0f1;
+        }
+        
+        .architecture-section h3 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .arch-layer {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .layer-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .layer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .data-model {
+            background: #fff8e1;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #ffc107;
+        }
+        
+        .data-model h3 {
+            text-align: center;
+            color: #f57f17;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .tables-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .table-box {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            text-align: center;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        
+        .table-fields {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .timeline-section {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #4caf50;
+        }
+        
+        .timeline-section h3 {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .week-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 15px 0;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .week-number {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-right: 15px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .week-content {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .future-phases {
+            background: #fce4ec;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px solid #e91e63;
+        }
+        
+        .future-phases h3 {
+            text-align: center;
+            color: #ad1457;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+        
+        .phase-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .phase-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .phase-description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            margin-left: 20px;
+        }
+        
+        .step-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: 20px;
+        }
+        
+        .step-icon {
+            font-size: 3rem;
+            opacity: 0.7;
+        }
+        
+        .step-description {
+            flex: 1;
+        }
+        
+        .step-description p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .arrow {
+            text-align: center;
+            font-size: 2rem;
+            color: #4facfe;
+            margin: 10px 0;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px dashed #4facfe;
+        }
+        
+        .example-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .example-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .user-profile {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .user-avatar {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .user-skill {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .match-arrow {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #4ecdc4;
+        }
+        
+        @media (max-width: 768px) {
+            .example-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .flow-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 TruekIA</h1>
+            <p>Arquitectura Técnica - Oracle APEX Development</p>
+        </div>
+        
+        <div class="flow-container">
+
+            <div class="align-right">
+                <a href="index.html" class="btn-link">Volver a presentación</a>
+            </div>
+
+            <!-- MVP - Fase 1 -->
+            <div class="phase-header">
+                <h2>🎯 MVP - FASE 1: Funcionalidades Básicas</h2>
+                <p>Desarrollo inicial en Oracle APEX - 4-6 semanas</p>
+            </div>
+            
+            <!-- Componente 1: Base de Datos -->
+            <div class="flow-step step-backend">
+                <div class="step-number">DB</div>
+                <div class="step-title">🗄️ Base de Datos Oracle</div>
+                <div class="step-content">
+                    <div class="step-icon">🏗️</div>
+                    <div class="step-description">
+                        <p><strong>🎯 BACKEND (Gago):</strong></p>
+                        <p>• Diseño de tablas: USUARIOS, HABILIDADES, INTERCAMBIOS</p>
+                        <p>• Procedimientos almacenados para matching básico</p>
+                        <p>• APIs REST para integración con servicios IA</p>
+                        <p>• Triggers y validaciones de negocio</p>
+                    </div>
+                </div>
+                <div class="task-box backend-task">
+                    <strong>Tareas:</strong> Modelo de datos, PL/SQL, APIs, seguridad DB
+                </div>
+            </div>
+            
+            <!-- Componente 2: APEX Application -->
+            <div class="flow-step step-frontend">
+                <div class="step-number">FE</div>
+                <div class="step-title">💻 Oracle APEX Frontend</div>
+                <div class="step-content">
+                    <div class="step-icon">🖥️</div>
+                    <div class="step-description">
+                        <p><strong>🎨 FRONTEND (Dany + Seba):</strong></p>
+                        <p>• Páginas APEX: Login, Registro, Perfil, Dashboard</p>
+                        <p>• Formularios dinámicos para habilidades</p>
+                        <p>• Grillas interactivas para matches</p>
+                        <p>• Implementación de mockups UX</p>
+                    </div>
+                </div>
+                <div class="task-box frontend-task">
+                    <strong>Tareas:</strong> Páginas APEX, formularios, navegación, responsive design
+                </div>
+            </div>
+            
+            <!-- Componente 3: UX/UI Design -->
+            <div class="flow-step step-design">
+                <div class="step-number">UX</div>
+                <div class="step-title">🎨 Diseño UX/UI</div>
+                <div class="step-content">
+                    <div class="step-icon">✨</div>
+                    <div class="step-description">
+                        <p><strong>🎭 UX/UI DESIGNER (Dany):</strong></p>
+                        <p>• Wireframes y mockups de todas las pantallas</p>
+                        <p>• Sistema de diseño y componentes APEX</p>
+                        <p>• Flujos de usuario optimizados</p>
+                        <p>• Temas CSS personalizados para APEX</p>
+                    </div>
+                </div>
+                <div class="task-box design-task">
+                    <strong>Tareas:</strong> Wireframes, mockups, CSS themes, user flows
+                </div>
+            </div>
+            
+            <!-- Arquitectura Técnica -->
+            <div class="architecture-section">
+                <h3>🏗️ ARQUITECTURA TÉCNICA MVP</h3>
+                
+                <div class="arch-layer">
+                    <div class="layer-title">🎨 CAPA DE PRESENTACIÓN</div>
+                    <div class="layer-content">
+                        <div class="tech-item">Oracle APEX 23.1+</div>
+                        <div class="tech-item">Universal Theme</div>
+                        <div class="tech-item">CSS Custom</div>
+                        <div class="tech-item">JavaScript básico</div>
+                    </div>
+                </div>
+                
+                <div class="arch-layer">
+                    <div class="layer-title">⚙️ CAPA DE LÓGICA</div>
+                    <div class="layer-content">
+                        <div class="tech-item">APEX Processes</div>
+                        <div class="tech-item">Dynamic Actions</div>
+                        <div class="tech-item">PL/SQL Packages</div>
+                        <div class="tech-item">REST Data Sources</div>
+                    </div>
+                </div>
+                
+                <div class="arch-layer">
+                    <div class="layer-title">🗄️ CAPA DE DATOS</div>
+                    <div class="layer-content">
+                        <div class="tech-item">Oracle Database 19c+</div>
+                        <div class="tech-item">Workspace Schema</div>
+                        <div class="tech-item">APEX Collections</div>
+                        <div class="tech-item">JSON Documents</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modelo de Datos Básico -->
+            <div class="data-model">
+                <h3>📊 MODELO DE DATOS MVP</h3>
+                <div class="tables-container">
+                    <div class="table-box">
+                        <div class="table-name">👤 USUARIOS</div>
+                        <div class="table-fields">
+                            • ID_USUARIO (PK)<br>
+                            • EMAIL<br>
+                            • NOMBRE<br>
+                            • UBICACION<br>
+                            • FECHA_REGISTRO<br>
+                            • ESTADO
+                        </div>
+                    </div>
+                    
+                    <div class="table-box">
+                        <div class="table-name">🛠️ HABILIDADES</div>
+                        <div class="table-fields">
+                            • ID_HABILIDAD (PK)<br>
+                            • ID_USUARIO (FK)<br>
+                            • TIPO (OFRECE/NECESITA)<br>
+                            • CATEGORIA<br>
+                            • DESCRIPCION<br>
+                            • NIVEL
+                        </div>
+                    </div>
+                    
+                    <div class="table-box">
+                        <div class="table-name">🤝 MATCHES</div>
+                        <div class="table-fields">
+                            • ID_MATCH (PK)<br>
+                            • ID_USUARIO_1 (FK)<br>
+                            • ID_USUARIO_2 (FK)<br>
+                            • SCORE_COMPATIBILIDAD<br>
+                            • ESTADO<br>
+                            • FECHA_MATCH
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timeline de Desarrollo -->
+            <div class="timeline-section">
+                <h3>📅 TIMELINE DE DESARROLLO - MVP</h3>
+                
+                <div class="week-item">
+                    <div class="week-number">S1-S2</div>
+                    <div class="week-content">
+                        <strong>Setup & Fundamentos</strong><br>
+                        • Backend: Modelo de datos + workspace APEX<br>
+                        • UX: Research + wireframes principales<br>
+                        • Frontend: Configuración APEX + tema base
+                    </div>
+                </div>
+                
+                <div class="week-item">
+                    <div class="week-number">S3-S4</div>
+                    <div class="week-content">
+                        <strong>Core Features</strong><br>
+                        • Backend: Tablas + PL/SQL básico<br>
+                        • UX: Mockups finales + componentes<br>
+                        • Frontend: Páginas de registro y perfil
+                    </div>
+                </div>
+                
+                <div class="week-item">
+                    <div class="week-number">S5-S6</div>
+                    <div class="week-content">
+                        <strong>Matching & Testing</strong><br>
+                        • Backend: Algoritmo matching + APIs<br>
+                        • UX: Refinamiento + testing usuarios<br>
+                        • Frontend: Dashboard + funciones match
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Futuras Fases -->
+            <div class="future-phases">
+                <h3>🚀 FASES FUTURAS (Post-MVP)</h3>
+                
+                <div class="phase-item">
+                    <div class="phase-title">FASE 2: IA Básica</div>
+                    <div class="phase-description">
+                        • Integración con OpenAI API<br>
+                        • Clasificación automática de habilidades<br>
+                        • Scoring inteligente de matches
+                    </div>
+                </div>
+                
+                <div class="phase-item">
+                    <div class="phase-title">FASE 3: Comunicación</div>
+                    <div class="phase-description">
+                        • Chat integrado en APEX<br>
+                        • Sistema de notificaciones<br>
+                        • Calendario de intercambios
+                    </div>
+                </div>
+                
+                <div class="phase-item">
+                    <div class="phase-title">FASE 4: IA Avanzada</div>
+                    <div class="phase-description">
+                        • Machine Learning personalizado<br>
+                        • Recomendaciones predictivas<br>
+                        • Análisis de sentimientos
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruekIA - Sistema de Intercambio de Habilidades</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .align-right {
+        display: flex;
+        justify-content: flex-end;
+        }
+
+        .btn-link {
+        display: inline-block;
+        margin: 0px 0;
+        padding: 10px 20px;
+        background: #4facfe;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.3s ease;
+        }
+
+        .btn-link:hover {
+        background: #64b9d1;
+        }
+        
+        .flow-container {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        
+        .flow-step {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border-left: 5px solid;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .flow-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .step-user { border-left-color: #4facfe; }
+        .step-ai { border-left-color: #ff6b6b; }
+        .step-match { border-left-color: #4ecdc4; }
+        .step-exchange { border-left-color: #45b7d1; }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            margin-left: 20px;
+        }
+        
+        .step-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: 20px;
+        }
+        
+        .step-icon {
+            font-size: 3rem;
+            opacity: 0.7;
+        }
+        
+        .step-description {
+            flex: 1;
+        }
+        
+        .step-description p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .arrow {
+            text-align: center;
+            font-size: 2rem;
+            color: #4facfe;
+            margin: 10px 0;
+        }
+        
+        .example-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            border: 2px dashed #4facfe;
+        }
+        
+        .example-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .example-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .user-profile {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .user-avatar {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .user-skill {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .match-arrow {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #4ecdc4;
+        }
+        
+        @media (max-width: 768px) {
+            .example-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .flow-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TruekAI</h1>
+            <p>Plataforma Inteligente de Intercambio de Habilidades</p>
+        </div>
+        
+        <div class="flow-container">
+            <div class="align-right">
+                <a href="dev_phase_one.html" class="btn-link">Ver modelo desarrollo MVP</a>
+            </div>
+            <!-- Paso 1: Registro de Usuario -->
+            <div class="flow-step step-user">
+                <div class="step-number">1</div>
+                <div class="step-title">📝 Registro y Perfil de Usuario</div>
+                <div class="step-content">
+                    <div class="step-icon">👤</div>
+                    <div class="step-description">
+                        <p>El usuario se registra y completa su perfil indicando:</p>
+                        <p>• <span class="highlight">Habilidades que ofrece</span> (ej: clases de inglés)</p>
+                        <p>• <span class="highlight">Servicios que necesita</span> (ej: reparación de computador)</p>
+                        <p>• Ubicación, disponibilidad y experiencia</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Paso 2: Procesamiento IA -->
+            <div class="flow-step step-ai">
+                <div class="step-number">2</div>
+                <div class="step-title">🤖 Procesamiento Inteligente con IA</div>
+                <div class="step-content">
+                    <div class="step-icon">🧠</div>
+                    <div class="step-description">
+                        <p>La IA analiza automáticamente:</p>
+                        <p>• <span class="highlight">Clasificación de habilidades</span> y niveles de expertise</p>
+                        <p>• <span class="highlight">Compatibilidad geográfica</span> y horarios</p>
+                        <p>• <span class="highlight">Historial y reputación</span> de intercambios previos</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Paso 3: Matching -->
+            <div class="flow-step step-match">
+                <div class="step-number">3</div>
+                <div class="step-title">🎯 Matching Inteligente</div>
+                <div class="step-content">
+                    <div class="step-icon">🔗</div>
+                    <div class="step-description">
+                        <p>El sistema genera matches automáticos basados en:</p>
+                        <p>• <span class="highlight">Complementariedad perfecta</span> de necesidades</p>
+                        <p>• <span class="highlight">Score de compatibilidad</span> calculado por IA</p>
+                        <p>• <span class="highlight">Recomendaciones personalizadas</span> para cada usuario</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Paso 4: Intercambio -->
+            <div class="flow-step step-exchange">
+                <div class="step-number">4</div>
+                <div class="step-title">🔄 Intercambio y Seguimiento</div>
+                <div class="step-content">
+                    <div class="step-icon">💫</div>
+                    <div class="step-description">
+                        <p>Los usuarios conectan y realizan el intercambio:</p>
+                        <p>• <span class="highlight">Chat integrado</span> para coordinar detalles</p>
+                        <p>• <span class="highlight">Sistema de valoraciones</span> post-intercambio</p>
+                        <p>• <span class="highlight">IA aprende</span> para mejorar futuros matches</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ejemplo Práctico -->
+            <div class="example-box">
+                <div class="example-title">💡 Ejemplo: Caso de Uso Real</div>
+                <div class="example-content">
+                    <div class="user-profile">
+                        <div class="user-avatar">👨‍🏫</div>
+                        <div class="user-name">Carlos - Profesor</div>
+                        <div class="user-skill">
+                            <strong>Ofrece:</strong> Clases de Inglés<br>
+                            <strong>Necesita:</strong> Reparación PC
+                        </div>
+                    </div>
+                    
+                    <div class="match-arrow">🤝</div>
+                    
+                    <div class="user-profile">
+                        <div class="user-avatar">👨‍💻</div>
+                        <div class="user-name">Ana - Técnica IT</div>
+                        <div class="user-skill">
+                            <strong>Ofrece:</strong> Reparación PC<br>
+                            <strong>Necesita:</strong> Clases de Inglés
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.7); border-radius: 10px;">
+                    <strong>🎯 Match Perfecto al 95%</strong><br>
+                    <span style="color: #666;">La IA detecta complementariedad total + proximidad geográfica + horarios compatibles</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
